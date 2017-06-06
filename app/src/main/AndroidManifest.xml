@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.eidamsvoboda.meteorites"
 	xmlns:android="http://schemas.android.com/apk/res/android">
+
 	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 	<application
 		android:name=".App"
@@ -20,6 +22,13 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
+		<activity android:name=".MapActivity">
+		</activity>
+
+		<meta-data
+			android:name="com.google.android.geo.API_KEY"
+			android:value="AIzaSyA45RhduidGx8uzlXXQxmnJ6nhqFPdv0xw"/>
+
 	</application>
 
 </manifest>
