@@ -12,7 +12,7 @@ public class Meteorite extends RealmObject{
 	Geolocation geolocation;
 	@PrimaryKey
 	String id;
-	String mass;
+	double mass;
 	String name;
 	String nametype;
 	String recclass;
