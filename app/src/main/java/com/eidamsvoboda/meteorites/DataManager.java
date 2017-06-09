@@ -2,6 +2,8 @@ package com.eidamsvoboda.meteorites;
 
 import android.util.Log;
 
+import com.orhanobut.hawk.Hawk;
+
 import java.util.List;
 
 import io.realm.Realm;
@@ -15,6 +17,13 @@ import retrofit2.Response;
  */
 
 public class DataManager {
+
+	public interface SyncCallback {
+		void onSyncSuccess();
+
+		void onSyncFailed();
+	}
+
 	public static void syncMeteorites(final Realm realm, final SyncCallback syncCallback) {
 		final RealmList<Meteorite> meteorites = new RealmList<>();
 
@@ -50,8 +59,11 @@ public class DataManager {
 		});
 	}
 
-	public interface SyncCallback {
-		void onSyncSuccess();
-		void onSyncFailed();
+	public static void setUpdateFrequency(int frequency) {
+		Hawk.put(Constant.Settings.UPDATE_FREQUENCY, frequency);
+	}
+
+	public static int getUpdateFrequency() {
+		return Hawk.get(Constant.Settings.UPDATE_FREQUENCY, Constant.Settings.UPDATE_FREQUENCY_DEFAULT);
 	}
 }

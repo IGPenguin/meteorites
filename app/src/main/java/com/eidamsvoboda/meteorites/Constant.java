@@ -18,5 +18,9 @@ public class Constant {
 		public static final String TOKEN = "xSi7f21Q6jC3R78siFsUrrwj3";
 		public static final String SECRET_TOKEN = "RzHFU_TbrLQROPyieqJFBcn5u_UIHivjYwb1";
 	}
+	public static class Settings{
+		public static final int UPDATE_FREQUENCY_DEFAULT = 24;
+		public static final String UPDATE_FREQUENCY = "update_frequency";
+	}
 
 }

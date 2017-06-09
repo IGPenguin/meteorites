@@ -2,6 +2,8 @@ package com.eidamsvoboda.meteorites;
 
 import android.app.Application;
 
+import com.orhanobut.hawk.Hawk;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -18,5 +20,6 @@ public class App extends Application {
 				.deleteRealmIfMigrationNeeded()
 				.build();
 		Realm.setDefaultConfiguration(realmConfig);
+		Hawk.init(this).build();
 	}
 }
