@@ -5,24 +5,26 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmList;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.RecyclerItemClickListener {
 
 	@BindView(R.id.recycler) RecyclerView recyclerView;
+	@BindView(R.id.errorTextView) TextView errorTextView;
+
 	MeteoriteAdapter meteoriteAdapter;
-	RealmList<Meteorite> meteorites = new RealmList<>();
+	RealmList<Meteorite> meteoriteList = new RealmList<>();
 	Realm realm;
 
 	@Override
@@ -34,30 +36,27 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(layoutManager);
-		meteoriteAdapter = new MeteoriteAdapter(meteorites, this);
+		meteoriteAdapter = new MeteoriteAdapter(meteoriteList, this);
 		recyclerView.setAdapter(meteoriteAdapter);
 	}
 
-	@OnClick(R.id.getButton)
-	public void onGet() {
-		Api.get().getMeteorites().enqueue(new Callback<List<Meteorite>>() {
+	@Override
+	protected void onResume() {
+		super.onResume();
+		fillRecycler();
+	}
 
-			@Override
-			public void onResponse(Call<List<Meteorite>> call, Response<List<Meteorite>> response) {
-				if (response.isSuccessful()) {
-					Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
-					meteorites.addAll(response.body());
-					meteoriteAdapter.notifyDataSetChanged();
-				} else {
-					Toast.makeText(MainActivity.this, "Server Fail: " + response.message(), Toast.LENGTH_SHORT).show();
-				}
-			}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu, menu);
+		return true;
+	}
 
-			@Override
-			public void onFailure(Call<List<Meteorite>> call, Throwable t) {
-				Toast.makeText(MainActivity.this, "Fail: " + t.toString(), Toast.LENGTH_LONG).show();
-			}
-		});
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
+		startActivity(settingsActivityIntent);
+		return true;
 	}
 
 	@Override
@@ -75,5 +74,29 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 	protected void onDestroy() {
 		super.onDestroy();
 		realm.close();
+	}
+
+	public void fillRecycler() {
+		RealmResults<Meteorite> meteoriteRealmResults = realm.where(Meteorite.class)
+				.findAllSorted("mass", Sort.DESCENDING); //Tabs ~ adjusting sort?
+		if (meteoriteRealmResults.size() > 0) {
+			meteoriteList.clear();
+			meteoriteList.addAll(meteoriteRealmResults);
+			errorTextView.setVisibility(View.GONE);
+			recyclerView.setVisibility(View.VISIBLE);
+			meteoriteAdapter.notifyDataSetChanged();
+		} else {
+			Toast.makeText(this,"Local database is empty, syncing.",Toast.LENGTH_SHORT).show();
+			DataManager.syncMeteorites(realm, new DataManager.SyncCallback() {
+				@Override
+				public void onSyncSuccess() {
+					fillRecycler();
+				}
+
+				@Override public void onSyncFailed() {
+					Toast.makeText(MainActivity.this,"Sync failed, check your connection.",Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
 	}
 }

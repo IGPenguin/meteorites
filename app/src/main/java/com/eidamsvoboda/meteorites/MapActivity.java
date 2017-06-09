@@ -40,7 +40,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
-		googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+		googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 		LatLng latLng = new LatLng(lat, lng);
 		googleMap.addMarker(new MarkerOptions()
 				.position(latLng)
