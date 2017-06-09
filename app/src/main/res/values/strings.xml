@@ -12,7 +12,7 @@
 	<string name="settings_sync_force">Sync now</string>
 
 	<!-- Toasts -->
-	<string name="toast_no_data">Local database is empty, syncing.</string>
+	<string name="toast_sync_start">Syncing database…</string>
 	<string name="toast_sync_failed">Sync failed, check your connection.</string>
 	<string name="toast_sync_succeeded">Database synced.</string>
 

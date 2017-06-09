@@ -68,6 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 	@OnClick(R.id.buttonForceSync)
 	public void onForceSync() {
+		Toast.makeText(SettingsActivity.this, R.string.toast_sync_start, Toast.LENGTH_SHORT).show();
 		DataManager.syncMeteorites(realm, new DataManager.SyncCallback() {
 			@Override public void onSyncSuccess() {
 				Toast.makeText(SettingsActivity.this, R.string.toast_sync_succeeded, Toast.LENGTH_SHORT).show();
