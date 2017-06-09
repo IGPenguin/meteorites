@@ -21,10 +21,6 @@ import retrofit2.http.GET;
 public class Api {
 	private static ServerService serverService;
 
-	private static final String URL = "https://data.nasa.gov/";
-	private static final String TOKEN = "xSi7f21Q6jC3R78siFsUrrwj3";
-	private static final String SECRET_TOKEN = "RzHFU_TbrLQROPyieqJFBcn5u_UIHivjYwb1";
-
 	static ServerService get() {
 		if (serverService == null) {
 
@@ -34,7 +30,7 @@ public class Api {
 					HttpUrl originalUrl = original.url();
 
 					HttpUrl tokenUrl = originalUrl.newBuilder()
-							.addQueryParameter("$$app_token",TOKEN)
+							.addQueryParameter("$$app_token",Constant.Api.TOKEN)
 							.build();
 
 					Request.Builder requestBuilder = original.newBuilder()
@@ -54,7 +50,7 @@ public class Api {
 					.build();
 
 			Retrofit retrofit = new Retrofit.Builder()
-					.baseUrl(URL)
+					.baseUrl(Constant.Api.URL)
 					.client(client)
 					.addConverterFactory(GsonConverterFactory.create())
 					.build();

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 	@Override
 	protected void onResume() {
 		super.onResume();
-		fillRecycler();
+		fillRecycler("mass",Sort.DESCENDING);
 	}
 
 	@Override
@@ -61,12 +61,10 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 
 	@Override
 	public void onRecyclerItemClick(Meteorite meteorite) {
-		Toast.makeText(MainActivity.this, "Clicked: " + meteorite.name, Toast.LENGTH_SHORT).show();
-
 		Intent mapActivityIntent = new Intent(this, MapActivity.class);
-		mapActivityIntent.putExtra(Constant.INTENT_METEORITE_NAME, meteorite.name);
-		mapActivityIntent.putExtra(Constant.INTENT_METEORITE_LAT, meteorite.reclat);
-		mapActivityIntent.putExtra(Constant.INTENT_METEORITE_LNG, meteorite.reclong);
+		mapActivityIntent.putExtra(Constant.Intent.METEORITE_NAME, meteorite.name);
+		mapActivityIntent.putExtra(Constant.Intent.METEORITE_LAT, meteorite.reclat);
+		mapActivityIntent.putExtra(Constant.Intent.METEORITE_LNG, meteorite.reclong);
 		startActivity(mapActivityIntent);
 	}
 
@@ -76,9 +74,10 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 		realm.close();
 	}
 
-	public void fillRecycler() {
+	public void fillRecycler(final String sortKey, final Sort sortOrder) {
 		RealmResults<Meteorite> meteoriteRealmResults = realm.where(Meteorite.class)
-				.findAllSorted("mass", Sort.DESCENDING); //Tabs ~ adjusting sort?
+				.findAllSorted(sortKey, sortOrder); //Tabs ~ adjusting sort?
+
 		if (meteoriteRealmResults.size() > 0) {
 			meteoriteList.clear();
 			meteoriteList.addAll(meteoriteRealmResults);
@@ -90,10 +89,11 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 			DataManager.syncMeteorites(realm, new DataManager.SyncCallback() {
 				@Override
 				public void onSyncSuccess() {
-					fillRecycler();
+					fillRecycler(sortKey,sortOrder);
 				}
 
-				@Override public void onSyncFailed() {
+				@Override
+				public void onSyncFailed() {
 					Toast.makeText(MainActivity.this,"Sync failed, check your connection.",Toast.LENGTH_SHORT).show();
 				}
 			});

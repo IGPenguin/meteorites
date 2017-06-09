@@ -26,9 +26,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 		setContentView(R.layout.activity_map);
 		ButterKnife.bind(this);
 
-		name = getIntent().getStringExtra(Constant.INTENT_METEORITE_NAME);
-		lat = Double.parseDouble(getIntent().getStringExtra(Constant.INTENT_METEORITE_LAT));
-		lng = Double.parseDouble(getIntent().getStringExtra(Constant.INTENT_METEORITE_LNG));
+		name = getIntent().getStringExtra(Constant.Intent.METEORITE_NAME);
+		lat = Double.parseDouble(getIntent().getStringExtra(Constant.Intent.METEORITE_LAT));
+		lng = Double.parseDouble(getIntent().getStringExtra(Constant.Intent.METEORITE_LNG));
 
 		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
@@ -45,7 +45,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 		googleMap.addMarker(new MarkerOptions()
 				.position(latLng)
 				.title(name));
-		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constant.MAP_ZOOM));
+		googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, Constant.Map.ZOOM));
 	}
 
 	@Override
