@@ -12,35 +12,44 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:padding="8dp"
-		android:text="@string/settings_update_frequency"
+		android:text="@string/settings_sync_frequency"
 		android:textColor="@color/black"
 		android:textSize="18sp"/>
 
 	<RadioGroup
-		android:paddingLeft="8dp"
-		android:paddingRight="8dp"
 		android:id="@+id/radioGroup"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal">
+		android:orientation="horizontal"
+		android:paddingLeft="8dp"
+		android:paddingRight="8dp">
 		<RadioButton
 			android:id="@+id/radio24"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/settings_update_24"/>
+			android:text="@string/settings_sync_24"/>
 		<RadioButton
 			android:id="@+id/radio12"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/settings_update_12"/>
+			android:text="@string/settings_sync_12"/>
 		<RadioButton
 			android:id="@+id/radio8"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/settings_update_8"/>
+			android:text="@string/settings_sync_8"/>
 	</RadioGroup>
+
+	<Button
+		android:id="@+id/buttonForceSync"
+		android:layout_width="wrap_content"
+		android:layout_height="40dp"
+		android:layout_gravity="center"
+		android:minWidth="200dp"
+		android:padding="8dp"
+		android:text="@string/settings_sync_force"/>
 
 </LinearLayout>

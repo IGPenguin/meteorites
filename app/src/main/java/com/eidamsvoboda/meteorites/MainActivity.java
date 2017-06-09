@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 			recyclerView.setVisibility(View.VISIBLE);
 			meteoriteAdapter.notifyDataSetChanged();
 		} else {
-			Toast.makeText(this,"Local database is empty, syncing.",Toast.LENGTH_SHORT).show();
+			Toast.makeText(this,R.string.toast_no_data,Toast.LENGTH_SHORT).show();
 			DataManager.syncMeteorites(realm, new DataManager.SyncCallback() {
 				@Override
 				public void onSyncSuccess() {
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 
 				@Override
 				public void onSyncFailed() {
-					Toast.makeText(MainActivity.this,"Sync failed, check your connection.",Toast.LENGTH_SHORT).show();
+					Toast.makeText(MainActivity.this,R.string.toast_sync_failed,Toast.LENGTH_SHORT).show();
 				}
 			});
 		}
