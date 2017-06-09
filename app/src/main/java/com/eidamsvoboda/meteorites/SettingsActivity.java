@@ -6,7 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,6 +19,7 @@ import io.realm.Realm;
 
 public class SettingsActivity extends AppCompatActivity {
 
+	@BindView(R.id.lastSyncTextView) TextView lastSyncTextView;
 	@BindView(R.id.radioGroup) RadioGroup radioGroup;
 	@BindView(R.id.radio24) RadioButton radioButton24;
 	@BindView(R.id.radio12) RadioButton radioButton12;
@@ -38,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		radioGroup.clearCheck();
-		switch (DataManager.getUpdateFrequency()) {
+		switch (DataManager.getSyncFrequency()) {
 			case 24:
 				radioButton24.setChecked(true);
 				break;
@@ -49,21 +54,24 @@ public class SettingsActivity extends AppCompatActivity {
 				radioButton8.setChecked(true);
 				break;
 		}
+		updateLastSyncTextView();
 	}
 
 	@OnClick({R.id.radio24, R.id.radio12, R.id.radio8})
 	public void onRadioClick(RadioButton button) {
+		SyncScheduler.cancelSchedule(this);
 		switch (button.getId()) {
 			case R.id.radio24:
-				DataManager.setUpdateFrequency(24);
+				DataManager.setSyncFrequency(24);
 				break;
 			case R.id.radio12:
-				DataManager.setUpdateFrequency(12);
+				DataManager.setSyncFrequency(12);
 				break;
 			case R.id.radio8:
-				DataManager.setUpdateFrequency(8);
+				DataManager.setSyncFrequency(8);
 				break;
 		}
+		SyncScheduler.scheduleSync(this);
 	}
 
 	@OnClick(R.id.buttonForceSync)
@@ -72,10 +80,16 @@ public class SettingsActivity extends AppCompatActivity {
 		DataManager.syncMeteorites(realm, new DataManager.SyncCallback() {
 			@Override public void onSyncSuccess() {
 				Toast.makeText(SettingsActivity.this, R.string.toast_sync_succeeded, Toast.LENGTH_SHORT).show();
+				DataManager.setLastSyncDate(System.currentTimeMillis());
+				DataManager.setLastSyncResult(getString(R.string.toast_sync_succeeded));
+				updateLastSyncTextView();
 			}
 
 			@Override public void onSyncFailed() {
 				Toast.makeText(SettingsActivity.this, R.string.toast_sync_failed, Toast.LENGTH_SHORT).show();
+				DataManager.setLastSyncDate(System.currentTimeMillis());
+				DataManager.setLastSyncResult(getString(R.string.toast_sync_failed));
+				updateLastSyncTextView();
 			}
 		});
 	}
@@ -84,5 +98,10 @@ public class SettingsActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		onBackPressed();
 		return true;
+	}
+
+	public void updateLastSyncTextView() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
+		lastSyncTextView.setText(getString(R.string.settings_last_sync,DataManager.getLastSyncResult()+" "+formatter.format(DataManager.getLastSyncDate())));
 	}
 }

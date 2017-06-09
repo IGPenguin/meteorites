@@ -52,4 +52,13 @@
 		android:padding="8dp"
 		android:text="@string/settings_sync_force"/>
 
+	<TextView
+		android:id="@+id/lastSyncTextView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:textColor="@color/black"
+		android:textSize="12sp"
+		tools:text="Last sync: Success 42420"/>
+
 </LinearLayout>

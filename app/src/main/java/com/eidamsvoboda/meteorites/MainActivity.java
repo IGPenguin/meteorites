@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 		recyclerView.setLayoutManager(layoutManager);
 		meteoriteAdapter = new MeteoriteAdapter(meteoriteList, this);
 		recyclerView.setAdapter(meteoriteAdapter);
+
+		SyncScheduler.scheduleSync(this);
 	}
 
 	@Override

@@ -59,11 +59,27 @@ public class DataManager {
 		});
 	}
 
-	public static void setUpdateFrequency(int frequency) {
-		Hawk.put(Constant.Settings.UPDATE_FREQUENCY, frequency);
+	public static void setSyncFrequency(int frequency) {
+		Hawk.put(Constant.Settings.SYNC_FREQUENCY, frequency);
 	}
 
-	public static int getUpdateFrequency() {
-		return Hawk.get(Constant.Settings.UPDATE_FREQUENCY, Constant.Settings.UPDATE_FREQUENCY_DEFAULT);
+	public static int getSyncFrequency() {
+		return Hawk.get(Constant.Settings.SYNC_FREQUENCY, Constant.Settings.SYNC_FREQUENCY_DEFAULT);
+	}
+
+	public static void setLastSyncDate(long dateMillis) {
+		Hawk.put(Constant.Settings.SYNC_LAST_DATE, dateMillis);
+	}
+
+	public static long getLastSyncDate() {
+		return Hawk.get(Constant.Settings.SYNC_LAST_DATE, 0L);
+	}
+
+	public static void setLastSyncResult(String result) {
+		Hawk.put(Constant.Settings.SYNC_LAST_RESULT, result);
+	}
+
+	public static String getLastSyncResult() {
+		return Hawk.get(Constant.Settings.SYNC_LAST_RESULT, "n/a");
 	}
 }
