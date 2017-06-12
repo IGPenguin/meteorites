@@ -11,12 +11,13 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:entries="@array/sort_fields"
-		android:paddingBottom="16dp"/>
+		android:paddingBottom="16dp"
+		android:paddingTop="16dp"/>
 
 	<RadioGroup
 		android:id="@+id/sortRadioGroup"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:orientation="vertical">
 
 		<RadioButton
@@ -24,6 +25,8 @@
 			style="@style/RecyclerText"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:paddingBottom="16dp"
+			android:paddingTop="16dp"
 			android:text="@string/main_sort_ascending"/>
 
 		<RadioButton
@@ -31,7 +34,8 @@
 			style="@style/RecyclerText"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginBottom="4dp"
+			android:paddingBottom="16dp"
+			android:paddingTop="16dp"
 			android:text="@string/main_sort_descending"/>
 
 	</RadioGroup>
