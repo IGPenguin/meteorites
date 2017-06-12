@@ -15,11 +15,11 @@ public class SyncCallback {
 
 	void onSyncSuccess(){
 		DataManager.setLastSyncDate(System.currentTimeMillis());
-		DataManager.setLastSyncResult(context.getString(R.string.toast_sync_succeeded));
+		DataManager.setLastSyncResult(context.getString(R.string.settings_sync_succeeded));
 	}
 
 	void onSyncFailed(){
 		DataManager.setLastSyncDate(System.currentTimeMillis());
-		DataManager.setLastSyncResult(context.getString(R.string.toast_sync_failed));
+		DataManager.setLastSyncResult(context.getString(R.string.settings_sync_failed));
 	}
 }
