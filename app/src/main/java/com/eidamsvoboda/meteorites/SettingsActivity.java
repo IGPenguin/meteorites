@@ -40,6 +40,12 @@ public class SettingsActivity extends AppCompatActivity {
 	}
 
 	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		realm.close();
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 		radioGroup.clearCheck();
