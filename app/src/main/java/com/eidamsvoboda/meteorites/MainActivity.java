@@ -2,19 +2,18 @@ package com.eidamsvoboda.meteorites;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.security.ProviderInstaller;
 
 import butterknife.BindView;
@@ -115,10 +114,18 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 	private void updateAndroidSecurityProvider() { // Fixes javax.net.ssl.SSLHandshakeException on android < 5.0
 		try {
 			ProviderInstaller.installIfNeeded(this);
-		} catch (GooglePlayServicesRepairableException e) {
-			GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), this, 0);
-		} catch (GooglePlayServicesNotAvailableException e) {
-			Log.e("SecurityException", "Google Play Services not available.");
+		} catch (Exception e) {
+			new MaterialDialog.Builder(this)
+					.title(R.string.dialog_play_services_title)
+					.content(e.toString())
+					.positiveText(R.string.dialog_play_services_close)
+					.onPositive(new MaterialDialog.SingleButtonCallback() {
+						@Override public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+							finish();
+						}
+					})
+					.cancelable(false)
+					.show();
 		}
 	}
 }

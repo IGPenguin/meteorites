@@ -19,4 +19,8 @@
 	<string name="toast_sync_failed">Sync failed, check your connection.</string>
 	<string name="toast_sync_succeeded">Database synced.</string>
 
+	<!-- Play services dialog -->
+	<string name="dialog_play_services_title">Google Play Services Error</string>
+	<string name="dialog_play_services_close">Close</string>
+
 </resources>
