@@ -1,6 +1,7 @@
 package com.eidamsvoboda.meteorites;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -42,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 		ButterKnife.bind(this);
 		realm = Realm.getDefaultInstance();
 
-		updateAndroidSecurityProvider();
-
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(layoutManager);
 		meteoriteAdapter = new MeteoriteAdapter(this, meteoriteList, this);
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 	@Override
 	protected void onResume() {
 		super.onResume();
+		updateAndroidSecurityProvider();
 		fillRecycler();
 	}
 
@@ -165,11 +165,18 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 		} catch (Exception e) {
 			new MaterialDialog.Builder(this)
 					.title(R.string.dialog_play_services_title)
-					.content(e.toString())
-					.positiveText(R.string.dialog_play_services_close)
-					.onPositive(new MaterialDialog.SingleButtonCallback() {
+					.content(e.getMessage())
+					.positiveText(R.string.dialog_play_services_repair)
+					.negativeColor(getResources().getColor(R.color.black))
+					.negativeText(R.string.dialog_play_services_close)
+					.onNegative(new MaterialDialog.SingleButtonCallback() {
 						@Override public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 							finish();
+						}
+					})
+					.onPositive(new MaterialDialog.SingleButtonCallback() {
+						@Override public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+							startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.gms")));
 						}
 					})
 					.cancelable(false)
