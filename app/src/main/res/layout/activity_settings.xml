@@ -28,18 +28,24 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:paddingBottom="16dp"
+			android:paddingTop="16dp"
 			android:text="@string/settings_sync_24"/>
 		<RadioButton
 			android:id="@+id/radio12"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:paddingBottom="16dp"
+			android:paddingTop="16dp"
 			android:text="@string/settings_sync_12"/>
 		<RadioButton
 			android:id="@+id/radio8"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
+			android:paddingBottom="16dp"
+			android:paddingTop="16dp"
 			android:text="@string/settings_sync_8"/>
 	</RadioGroup>
 
