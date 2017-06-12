@@ -2,6 +2,8 @@
 	<string name="app_name">Meteorites</string>
 
 	<!-- Main activity -->
+	<string name="main_no_data">No local data available</string>
+	<string name="main_mass">%.3fg</string>
 
 	<!-- Settings activity -->
 	<string name="settings_title">Settings</string>
