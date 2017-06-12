@@ -3,7 +3,6 @@ package com.eidamsvoboda.meteorites;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import io.realm.Realm;
 
@@ -17,13 +16,11 @@ public class SyncBroadcastReceiver extends BroadcastReceiver {
 			Realm realm = Realm.getDefaultInstance();
 			DataManager.syncMeteorites(realm, new DataManager.SyncCallback() {
 				@Override public void onSyncSuccess() {
-					Toast.makeText(context, R.string.toast_sync_succeeded, Toast.LENGTH_SHORT).show();
 					DataManager.setLastSyncDate(System.currentTimeMillis());
 					DataManager.setLastSyncResult(context.getString(R.string.toast_sync_succeeded));
 				}
 
 				@Override public void onSyncFailed() {
-					Toast.makeText(context, R.string.toast_sync_failed, Toast.LENGTH_SHORT).show();
 					DataManager.setLastSyncDate(System.currentTimeMillis());
 					DataManager.setLastSyncResult(context.getString(R.string.toast_sync_failed));
 				}

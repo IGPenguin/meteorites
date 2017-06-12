@@ -20,7 +20,6 @@ public class Constant {
 	}
 	public static class Settings{
 		public static final int SYNC_FREQUENCY_DEFAULT = 24;
-		public static final String SYNC_NEXT_DATE = "sync_next_date";
 		public static final String SYNC_FREQUENCY = "sync_frequency";
 		public static final String SYNC_LAST_DATE = "sync_last_date";
 		public static final String SYNC_LAST_RESULT = "sync_last_result";

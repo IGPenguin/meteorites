@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class SyncScheduler {
 	public static void scheduleSync(Context context) {  // Non waking alarm set on specific hour
 		AlarmManager alarmManager = (AlarmManager) (context.getSystemService(Context.ALARM_SERVICE));
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(DataManager.getSyncFrequency()), TimeUnit.SECONDS.toMillis(DataManager.getSyncFrequency()), getSyncIntent(context)); // TODO CHANGE TO HOURS AND NON WAKEUP AND INEXACT
+		alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(DataManager.getSyncFrequency()), TimeUnit.HOURS.toMillis(DataManager.getSyncFrequency()), getSyncIntent(context));
 	}
 
 	public static PendingIntent getSyncIntent(Context context) {
