@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 	@Override
 	protected void onResume() {
 		super.onResume();
-		fillRecycler("mass", Sort.DESCENDING);
+		fillRecycler();
 	}
 
 	@Override
@@ -63,8 +66,19 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
-		startActivity(settingsActivityIntent);
+		switch (item.getItemId()) {
+			case R.id.action_settings:
+				Intent settingsActivityIntent = new Intent(this, SettingsActivity.class);
+				startActivity(settingsActivityIntent);
+				break;
+			case R.id.action_sort:
+				if (realm.where(Meteorite.class).findAll().size() > 0) {
+					showSortDialog();
+				} else {
+					Toast.makeText(MainActivity.this, R.string.toast_no_data, Toast.LENGTH_SHORT).show();
+				}
+				break;
+		}
 		return true;
 	}
 
@@ -83,9 +97,9 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 		realm.close();
 	}
 
-	public void fillRecycler(final String sortKey, final Sort sortOrder) {
+	public void fillRecycler() {
 		RealmResults<Meteorite> meteoriteRealmResults = realm.where(Meteorite.class)
-				.findAllSorted(sortKey, sortOrder); //Tabs ~ adjusting sort?
+				.findAllSorted(DataManager.getSortField(), DataManager.getSortOrientation());
 
 		if (meteoriteRealmResults.size() > 0) {
 			meteoriteList.clear();
@@ -99,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 				@Override
 				public void onSyncSuccess() {
 					super.onSyncSuccess();
-					fillRecycler(sortKey, sortOrder);
+					fillRecycler();
 				}
 
 				@Override
@@ -109,6 +123,40 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 				}
 			});
 		}
+	}
+
+	private void showSortDialog() {
+		MaterialDialog dialog = new MaterialDialog.Builder(this)
+				.title(R.string.main_sort_title)
+				.positiveText(R.string.main_sort_apply)
+				.negativeText(R.string.main_sort_cancel)
+				.negativeColor(getResources().getColor(R.color.black))
+				.customView(R.layout.view_sort, true)
+				.onPositive(new MaterialDialog.SingleButtonCallback() {
+					@Override public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+						Spinner fieldSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.sortFieldSpinner);
+						RadioButton radioAscending = (RadioButton) dialog.getCustomView().findViewById(R.id.radioAscending);
+						if (radioAscending.isChecked()) {
+							DataManager.setSortOrientation(Sort.ASCENDING);
+						} else {
+							DataManager.setSortOrientation(Sort.DESCENDING);
+						}
+						DataManager.setSortField(fieldSpinner.getSelectedItem().toString());
+						fillRecycler();
+					}
+				})
+				.cancelable(true)
+				.build();
+
+		Spinner fieldSpinner = (Spinner) dialog.getCustomView().findViewById(R.id.sortFieldSpinner);
+		RadioButton radioAscending = (RadioButton) dialog.getCustomView().findViewById(R.id.radioAscending);
+		RadioButton radioDescending = (RadioButton) dialog.getCustomView().findViewById(R.id.radioDescending);
+
+		fieldSpinner.setSelection(((ArrayAdapter) fieldSpinner.getAdapter()).getPosition(DataManager.getSortField()));
+		radioAscending.setChecked(DataManager.getSortOrientation() == Sort.ASCENDING);
+		radioDescending.setChecked(DataManager.getSortOrientation() == Sort.DESCENDING);
+
+		dialog.show();
 	}
 
 	private void updateAndroidSecurityProvider() { // Fixes javax.net.ssl.SSLHandshakeException on android < 5.0

@@ -5,11 +5,19 @@
 	tools:context="com.example.toolbar.MainActivity">
 
 	<item
-		android:id="@+id/action_search"
+		android:id="@+id/action_sort"
+		android:icon="@drawable/ic_sort"
+		android:menuCategory="secondary"
+		android:orderInCategory="1"
+		android:title="@string/main_sort_title"
+		app:showAsAction="ifRoom"/>
+
+	<item
+		android:id="@+id/action_settings"
 		android:icon="@drawable/ic_settings"
 		android:menuCategory="secondary"
 		android:orderInCategory="1"
 		android:title="@string/settings_title"
-		app:showAsAction="always"/>
+		app:showAsAction="ifRoom"/>
 
 </menu>

@@ -23,6 +23,8 @@ public class Constant {
 		public static final String SYNC_FREQUENCY = "sync_frequency";
 		public static final String SYNC_LAST_DATE = "sync_last_date";
 		public static final String SYNC_LAST_RESULT = "sync_last_result";
+		public static final String SORT_FIELD = "sort_field";
+		public static final String SORT_ORIENTATION = "sort_orientation";
 	}
 
 }

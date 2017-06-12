@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.Sort;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,4 +77,26 @@ public class DataManager {
 	public static String getLastSyncResult() {
 		return Hawk.get(Constant.Settings.SYNC_LAST_RESULT, "n/a");
 	}
+
+	public static void setSortField(String sortField) {
+		Hawk.put(Constant.Settings.SORT_FIELD, sortField);
+	}
+
+	public static String getSortField() {
+		return Hawk.get(Constant.Settings.SORT_FIELD, "mass").toLowerCase();
+	}
+
+	public static void setSortOrientation(Sort sort) {
+		boolean ascending = (sort.equals(Sort.ASCENDING));
+		Hawk.put(Constant.Settings.SORT_ORIENTATION, ascending);
+	}
+
+	public static Sort getSortOrientation() {
+		if (Hawk.get(Constant.Settings.SORT_ORIENTATION, false)) {
+			return Sort.ASCENDING;
+		} else {
+			return Sort.DESCENDING;
+		}
+	}
+
 }
