@@ -77,18 +77,16 @@ public class SettingsActivity extends AppCompatActivity {
 	@OnClick(R.id.buttonForceSync)
 	public void onForceSync() {
 		Toast.makeText(SettingsActivity.this, R.string.toast_sync_start, Toast.LENGTH_SHORT).show();
-		DataManager.syncMeteorites(realm, new DataManager.SyncCallback() {
+		DataManager.syncMeteorites(realm, new SyncCallback(this) {
 			@Override public void onSyncSuccess() {
+				super.onSyncSuccess();
 				Toast.makeText(SettingsActivity.this, R.string.toast_sync_succeeded, Toast.LENGTH_SHORT).show();
-				DataManager.setLastSyncDate(System.currentTimeMillis());
-				DataManager.setLastSyncResult(getString(R.string.toast_sync_succeeded));
 				updateLastSyncTextView();
 			}
 
 			@Override public void onSyncFailed() {
+				super.onSyncFailed();
 				Toast.makeText(SettingsActivity.this, R.string.toast_sync_failed, Toast.LENGTH_SHORT).show();
-				DataManager.setLastSyncDate(System.currentTimeMillis());
-				DataManager.setLastSyncResult(getString(R.string.toast_sync_failed));
 				updateLastSyncTextView();
 			}
 		});

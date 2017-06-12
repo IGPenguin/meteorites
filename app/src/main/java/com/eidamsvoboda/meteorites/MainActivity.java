@@ -5,11 +5,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.security.ProviderInstaller;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,9 +40,11 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 		ButterKnife.bind(this);
 		realm = Realm.getDefaultInstance();
 
+		updateAndroidSecurityProvider();
+
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(layoutManager);
-		meteoriteAdapter = new MeteoriteAdapter(meteoriteList, this);
+		meteoriteAdapter = new MeteoriteAdapter(this, meteoriteList, this);
 		recyclerView.setAdapter(meteoriteAdapter);
 
 		SyncScheduler.scheduleSync(this);
@@ -45,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 	@Override
 	protected void onResume() {
 		super.onResume();
-		fillRecycler("mass",Sort.DESCENDING);
+		fillRecycler("mass", Sort.DESCENDING);
 	}
 
 	@Override
@@ -87,18 +95,30 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 			recyclerView.setVisibility(View.VISIBLE);
 			meteoriteAdapter.notifyDataSetChanged();
 		} else {
-			Toast.makeText(this,R.string.toast_sync_start,Toast.LENGTH_SHORT).show();
-			DataManager.syncMeteorites(realm, new DataManager.SyncCallback() {
+			Toast.makeText(this, R.string.toast_sync_start, Toast.LENGTH_SHORT).show();
+			DataManager.syncMeteorites(realm, new SyncCallback(this) {
 				@Override
 				public void onSyncSuccess() {
-					fillRecycler(sortKey,sortOrder);
+					super.onSyncSuccess();
+					fillRecycler(sortKey, sortOrder);
 				}
 
 				@Override
 				public void onSyncFailed() {
-					Toast.makeText(MainActivity.this,R.string.toast_sync_failed,Toast.LENGTH_SHORT).show();
+					super.onSyncFailed();
+					Toast.makeText(MainActivity.this, R.string.toast_sync_failed, Toast.LENGTH_SHORT).show();
 				}
 			});
+		}
+	}
+
+	private void updateAndroidSecurityProvider() { // Fixes javax.net.ssl.SSLHandshakeException on android < 5.0
+		try {
+			ProviderInstaller.installIfNeeded(this);
+		} catch (GooglePlayServicesRepairableException e) {
+			GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), this, 0);
+		} catch (GooglePlayServicesNotAvailableException e) {
+			Log.e("SecurityException", "Google Play Services not available.");
 		}
 	}
 }

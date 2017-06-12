@@ -18,12 +18,6 @@ import retrofit2.Response;
 
 public class DataManager {
 
-	public interface SyncCallback {
-		void onSyncSuccess();
-
-		void onSyncFailed();
-	}
-
 	public static void syncMeteorites(final Realm realm, final SyncCallback syncCallback) {
 		final RealmList<Meteorite> meteorites = new RealmList<>();
 
