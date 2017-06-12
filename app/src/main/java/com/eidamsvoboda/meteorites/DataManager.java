@@ -83,7 +83,7 @@ public class DataManager {
 	}
 
 	public static String getSortField() {
-		return Hawk.get(Constant.Settings.SORT_FIELD, "mass").toLowerCase();
+		return Hawk.get(Constant.Settings.SORT_FIELD, "mass");
 	}
 
 	public static void setSortOrientation(Sort sort) {

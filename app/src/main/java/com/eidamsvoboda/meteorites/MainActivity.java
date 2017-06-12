@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 
 	public void fillRecycler() {
 		RealmResults<Meteorite> meteoriteRealmResults = realm.where(Meteorite.class)
-				.findAllSorted(DataManager.getSortField(), DataManager.getSortOrientation());
+				.findAllSorted(DataManager.getSortField().toLowerCase(), DataManager.getSortOrientation());
 
 		if (meteoriteRealmResults.size() > 0) {
 			meteoriteList.clear();
