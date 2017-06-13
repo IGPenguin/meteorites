@@ -61,7 +61,7 @@ public class Api {
 	}
 
 	interface ServerService {
-		@GET("resource/y77d-th95.json?$where=year >= '2011-01-01T00:00:00.000'")
+		@GET("resource/y77d-th95.json?$where=year>='2011-01-01T00:00:00.000'")
 		Call<List<Meteorite>> getMeteorites();
 	}
 }
