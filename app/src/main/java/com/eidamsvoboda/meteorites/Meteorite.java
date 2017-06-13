@@ -8,14 +8,10 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class Meteorite extends RealmObject{
-	String fall;
-	Geolocation geolocation;
 	@PrimaryKey
 	String id;
 	double mass;
 	String name;
-	String nametype;
-	String recclass;
 	String reclat;
 	String reclong;
 	String year;
