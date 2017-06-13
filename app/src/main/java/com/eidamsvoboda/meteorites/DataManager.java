@@ -7,7 +7,6 @@ import com.orhanobut.hawk.Hawk;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.Sort;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,19 +19,17 @@ import retrofit2.Response;
 public class DataManager {
 
 	public static void syncMeteorites(final Realm realm, final SyncCallback syncCallback) {
-		final RealmList<Meteorite> meteorites = new RealmList<>();
 
 		Api.get().getMeteorites().enqueue(new Callback<List<Meteorite>>() {
 
 			@Override
-			public void onResponse(Call<List<Meteorite>> call, Response<List<Meteorite>> response) {
+			public void onResponse(Call<List<Meteorite>> call, final Response<List<Meteorite>> response) {
 				if (response.isSuccessful()) {
 					if (response.body() != null) {
-						meteorites.addAll(response.body());
 						realm.executeTransaction(new Realm.Transaction() {
 							@Override
 							public void execute(Realm realm) {
-								realm.copyToRealmOrUpdate(meteorites);
+								realm.copyToRealmOrUpdate(response.body());
 								syncCallback.onSyncSuccess();
 							}
 						});
@@ -54,41 +51,36 @@ public class DataManager {
 		});
 	}
 
-	public static void setSyncFrequency(int frequency) {
-		Hawk.put(Constant.Settings.SYNC_FREQUENCY, frequency);
-	}
-
 	public static int getSyncFrequency() {
 		return Hawk.get(Constant.Settings.SYNC_FREQUENCY, Constant.Settings.SYNC_FREQUENCY_DEFAULT);
 	}
 
-	public static void setLastSyncDate(long dateMillis) {
-		Hawk.put(Constant.Settings.SYNC_LAST_DATE, dateMillis);
+	public static void setSyncFrequency(int frequency) {
+		Hawk.put(Constant.Settings.SYNC_FREQUENCY, frequency);
 	}
 
 	public static long getLastSyncDate() {
 		return Hawk.get(Constant.Settings.SYNC_LAST_DATE, 0L);
 	}
 
-	public static void setLastSyncResult(String result) {
-		Hawk.put(Constant.Settings.SYNC_LAST_RESULT, result);
+	public static void setLastSyncDate(long dateMillis) {
+		Hawk.put(Constant.Settings.SYNC_LAST_DATE, dateMillis);
 	}
 
 	public static String getLastSyncResult() {
 		return Hawk.get(Constant.Settings.SYNC_LAST_RESULT, "n/a");
 	}
 
-	public static void setSortField(String sortField) {
-		Hawk.put(Constant.Settings.SORT_FIELD, sortField);
+	public static void setLastSyncResult(String result) {
+		Hawk.put(Constant.Settings.SYNC_LAST_RESULT, result);
 	}
 
 	public static String getSortField() {
 		return Hawk.get(Constant.Settings.SORT_FIELD, "mass");
 	}
 
-	public static void setSortOrientation(Sort sort) {
-		boolean ascending = (sort.equals(Sort.ASCENDING));
-		Hawk.put(Constant.Settings.SORT_ORIENTATION, ascending);
+	public static void setSortField(String sortField) {
+		Hawk.put(Constant.Settings.SORT_FIELD, sortField);
 	}
 
 	public static Sort getSortOrientation() {
@@ -97,6 +89,11 @@ public class DataManager {
 		} else {
 			return Sort.DESCENDING;
 		}
+	}
+
+	public static void setSortOrientation(Sort sort) {
+		boolean ascending = (sort.equals(Sort.ASCENDING));
+		Hawk.put(Constant.Settings.SORT_ORIENTATION, ascending);
 	}
 
 }
