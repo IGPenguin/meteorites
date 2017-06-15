@@ -1,4 +1,4 @@
-package com.eidamsvoboda.meteorites;
+package com.eidamsvoboda.meteorites.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -8,6 +8,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.eidamsvoboda.meteorites.R;
+import com.eidamsvoboda.meteorites.sync.SyncCallback;
+import com.eidamsvoboda.meteorites.sync.SyncScheduler;
+import com.eidamsvoboda.meteorites.tools.DataManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;

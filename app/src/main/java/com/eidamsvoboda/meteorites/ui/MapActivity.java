@@ -1,10 +1,12 @@
-package com.eidamsvoboda.meteorites;
+package com.eidamsvoboda.meteorites.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.eidamsvoboda.meteorites.R;
+import com.eidamsvoboda.meteorites.tools.Constant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

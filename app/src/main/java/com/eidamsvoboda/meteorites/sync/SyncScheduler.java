@@ -1,9 +1,11 @@
-package com.eidamsvoboda.meteorites;
+package com.eidamsvoboda.meteorites.sync;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+
+import com.eidamsvoboda.meteorites.tools.DataManager;
 
 import java.util.concurrent.TimeUnit;
 

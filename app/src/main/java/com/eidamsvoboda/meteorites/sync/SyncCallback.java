@@ -1,6 +1,9 @@
-package com.eidamsvoboda.meteorites;
+package com.eidamsvoboda.meteorites.sync;
 
 import android.content.Context;
+
+import com.eidamsvoboda.meteorites.R;
+import com.eidamsvoboda.meteorites.tools.DataManager;
 
 /**
  * Created by eidamsvoboda on 12/06/2017.
@@ -9,16 +12,16 @@ import android.content.Context;
 public class SyncCallback {
 	Context context;
 
-	SyncCallback(Context context) {
+	public SyncCallback(Context context) {
 		this.context=context;
 	}
 
-	void onSyncSuccess(){
+	public void onSyncSuccess() {
 		DataManager.setLastSyncDate(System.currentTimeMillis());
 		DataManager.setLastSyncResult(context.getString(R.string.settings_sync_succeeded));
 	}
 
-	void onSyncFailed(){
+	public void onSyncFailed() {
 		DataManager.setLastSyncDate(System.currentTimeMillis());
 		DataManager.setLastSyncResult(context.getString(R.string.settings_sync_failed));
 	}

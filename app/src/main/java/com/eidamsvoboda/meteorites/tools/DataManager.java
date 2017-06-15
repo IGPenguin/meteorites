@@ -1,7 +1,10 @@
-package com.eidamsvoboda.meteorites;
+package com.eidamsvoboda.meteorites.tools;
 
 import android.util.Log;
 
+import com.eidamsvoboda.meteorites.api.Api;
+import com.eidamsvoboda.meteorites.model.Meteorite;
+import com.eidamsvoboda.meteorites.sync.SyncCallback;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.List;

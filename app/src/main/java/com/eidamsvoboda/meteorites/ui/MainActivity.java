@@ -1,4 +1,4 @@
-package com.eidamsvoboda.meteorites;
+package com.eidamsvoboda.meteorites.ui;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,12 +18,20 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.eidamsvoboda.meteorites.R;
+import com.eidamsvoboda.meteorites.model.Meteorite;
+import com.eidamsvoboda.meteorites.sync.SyncCallback;
+import com.eidamsvoboda.meteorites.sync.SyncScheduler;
+import com.eidamsvoboda.meteorites.tools.Constant;
+import com.eidamsvoboda.meteorites.tools.DataManager;
 import com.google.android.gms.security.ProviderInstaller;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -33,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 	@BindView(R.id.errorTextView) TextView errorTextView;
 
 	MeteoriteAdapter meteoriteAdapter;
-	RealmList<Meteorite> meteoriteList = new RealmList<>();
+	List<Meteorite> meteoriteList = new ArrayList<>();
 	Realm realm;
 
 	@Override
@@ -49,6 +57,12 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 		recyclerView.setAdapter(meteoriteAdapter);
 
 		SyncScheduler.scheduleSync(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		realm.close();
 	}
 
 	@Override
@@ -85,16 +99,10 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 	@Override
 	public void onRecyclerItemClick(Meteorite meteorite) {
 		Intent mapActivityIntent = new Intent(this, MapActivity.class);
-		mapActivityIntent.putExtra(Constant.Intent.METEORITE_NAME, meteorite.name);
-		mapActivityIntent.putExtra(Constant.Intent.METEORITE_LAT, meteorite.reclat);
-		mapActivityIntent.putExtra(Constant.Intent.METEORITE_LNG, meteorite.reclong);
+		mapActivityIntent.putExtra(Constant.Intent.METEORITE_NAME, meteorite.getName());
+		mapActivityIntent.putExtra(Constant.Intent.METEORITE_LAT, meteorite.getReclat());
+		mapActivityIntent.putExtra(Constant.Intent.METEORITE_LNG, meteorite.getReclong());
 		startActivity(mapActivityIntent);
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		realm.close();
 	}
 
 	public void fillRecycler() {

@@ -1,4 +1,4 @@
-package com.eidamsvoboda.meteorites;
+package com.eidamsvoboda.meteorites.tools;
 
 /**
  * Created by eidamsvoboda on 06/06/2017.

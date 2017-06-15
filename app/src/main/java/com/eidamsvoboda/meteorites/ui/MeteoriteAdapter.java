@@ -1,4 +1,4 @@
-package com.eidamsvoboda.meteorites;
+package com.eidamsvoboda.meteorites.ui;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.eidamsvoboda.meteorites.R;
+import com.eidamsvoboda.meteorites.model.Meteorite;
 
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class MeteoriteAdapter extends RecyclerView.Adapter<MeteoriteAdapter.View
 	RecyclerItemClickListener recyclerItemClickListener;
 	Context context;
 
-	MeteoriteAdapter(Context context, List<Meteorite> meteorites, RecyclerItemClickListener recyclerItemClickListener) {
+	public MeteoriteAdapter(Context context, List<Meteorite> meteorites, RecyclerItemClickListener recyclerItemClickListener) {
 		this.context = context;
 		this.meteorites = meteorites;
 		this.recyclerItemClickListener = recyclerItemClickListener;
@@ -37,10 +40,10 @@ public class MeteoriteAdapter extends RecyclerView.Adapter<MeteoriteAdapter.View
 	@Override
 	public void onBindViewHolder(ViewHolder holder, int position) {
 		Meteorite meteorite = meteorites.get(position);
-		holder.nameView.setText(meteorite.name);
-		holder.massView.setText(context.getString(R.string.main_mass, meteorite.mass));
-		holder.locationView.setText(meteorite.reclat + ", " + meteorite.reclong);
-		holder.dateView.setText(meteorite.year.substring(0, meteorite.year.indexOf("-"))); // Show only year, because other data are always the same (1st january 00:00:00)
+		holder.nameView.setText(meteorite.getName());
+		holder.massView.setText(context.getString(R.string.main_mass, meteorite.getMass()));
+		holder.locationView.setText(meteorite.getReclat() + ", " + meteorite.getReclong());
+		holder.dateView.setText(meteorite.getYear().substring(0, meteorite.getYear().indexOf("-"))); // Show only year, because other data are always the same (1st january 00:00:00)
 	}
 
 	@Override
