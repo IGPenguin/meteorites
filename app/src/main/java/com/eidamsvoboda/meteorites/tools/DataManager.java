@@ -108,9 +108,7 @@ public class DataManager {
 				.findAllSorted(DataManager.getSortField().toLowerCase(), DataManager.getSortOrientation());
 
 		if (meteoriteRealmResults.size() > 0) {
-			meteoriteList.clear();
 			meteoriteList.addAll(meteoriteRealmResults);
-
 		} else {
 			DataManager.syncMeteorites(realm, syncCallback);
 		}
