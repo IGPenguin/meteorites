@@ -2,7 +2,8 @@
 	<string name="app_name">Meteorites</string>
 
 	<!-- Main activity -->
-	<string name="main_no_data">No local data available</string>
+	<string name="main_no_data">Database sync failed, connect to internet.</string>
+	<string name="main_retry">Retry</string>
 	<string name="main_mass">%.3fg</string>
 	<string name="main_sort_title">Sort by</string>
 	<string name="main_sort_apply">Apply</string>

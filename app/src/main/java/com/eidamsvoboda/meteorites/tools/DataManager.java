@@ -7,9 +7,11 @@ import com.eidamsvoboda.meteorites.model.Meteorite;
 import com.eidamsvoboda.meteorites.sync.SyncCallback;
 import com.orhanobut.hawk.Hawk;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 import io.realm.Sort;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,7 +24,7 @@ import retrofit2.Response;
 public class DataManager {
 
 	public static void syncMeteorites(final Realm realm, final SyncCallback syncCallback) {
-
+		syncCallback.onSyncStarted();
 		Api.get().getMeteorites().enqueue(new Callback<List<Meteorite>>() {
 
 			@Override
@@ -97,6 +99,23 @@ public class DataManager {
 	public static void setSortOrientation(Sort sort) {
 		boolean ascending = (sort.equals(Sort.ASCENDING));
 		Hawk.put(Constant.Settings.SORT_ORIENTATION, ascending);
+	}
+
+	public static List<Meteorite> getMeteoriteList(final Realm realm, SyncCallback syncCallback) {
+		List<Meteorite> meteoriteList = new ArrayList<>();
+
+		RealmResults<Meteorite> meteoriteRealmResults = realm.where(Meteorite.class)
+				.findAllSorted(DataManager.getSortField().toLowerCase(), DataManager.getSortOrientation());
+
+		if (meteoriteRealmResults.size() > 0) {
+			meteoriteList.clear();
+			meteoriteList.addAll(meteoriteRealmResults);
+
+		} else {
+			DataManager.syncMeteorites(realm, syncCallback);
+		}
+
+		return meteoriteList;
 	}
 
 }

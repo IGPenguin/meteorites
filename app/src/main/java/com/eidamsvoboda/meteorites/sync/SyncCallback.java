@@ -16,6 +16,9 @@ public class SyncCallback {
 		this.context = context;
 	}
 
+	public void onSyncStarted() {
+	}
+
 	public void onSyncSuccess() {
 		DataManager.setLastSyncDate(System.currentTimeMillis());
 		DataManager.setLastSyncResult(context.getString(R.string.settings_sync_succeeded));

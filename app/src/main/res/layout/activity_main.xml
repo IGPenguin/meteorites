@@ -7,12 +7,18 @@
 	android:orientation="vertical"
 	tools:context="com.eidamsvoboda.meteorites.ui.MainActivity">
 
-
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recycler"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:scrollbars="vertical"
+		android:visibility="visible"/>
+
+	<ProgressBar
+		android:id="@+id/progressView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
 		android:visibility="gone"/>
 
 	<TextView
@@ -20,8 +26,20 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_centerInParent="true"
+		android:maxWidth="260dp"
 		android:text="@string/main_no_data"
 		android:textAlignment="center"
-		android:textColor="@color/black"/>
+		android:textColor="@color/black"
+		android:visibility="gone"/>
+
+	<Button
+		android:id="@+id/retryButton"
+		android:layout_width="wrap_content"
+		android:layout_height="40dp"
+		android:layout_centerInParent="true"
+		android:layout_alignTop="@id/errorTextView"
+		android:layout_marginTop="16dp"
+		android:text="@string/main_retry"
+		android:visibility="gone"/>
 
 </RelativeLayout>

@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import com.eidamsvoboda.meteorites.R;
 import com.eidamsvoboda.meteorites.model.Meteorite;
+import com.eidamsvoboda.meteorites.sync.SyncCallback;
+import com.eidamsvoboda.meteorites.tools.DataManager;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * Created by eidamsvoboda on 05/06/2017.
@@ -25,9 +28,9 @@ public class MeteoriteAdapter extends RecyclerView.Adapter<MeteoriteAdapter.View
 	RecyclerItemClickListener recyclerItemClickListener;
 	Context context;
 
-	public MeteoriteAdapter(Context context, List<Meteorite> meteorites, RecyclerItemClickListener recyclerItemClickListener) {
+	public MeteoriteAdapter(Context context, Realm realm, RecyclerItemClickListener recyclerItemClickListener, SyncCallback syncCallback) {
 		this.context = context;
-		this.meteorites = meteorites;
+		this.meteorites = DataManager.getMeteoriteList(realm, syncCallback);
 		this.recyclerItemClickListener = recyclerItemClickListener;
 	}
 

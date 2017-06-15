@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,22 +28,18 @@ import com.eidamsvoboda.meteorites.tools.Constant;
 import com.eidamsvoboda.meteorites.tools.DataManager;
 import com.google.android.gms.security.ProviderInstaller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
-import io.realm.RealmResults;
 import io.realm.Sort;
 
-public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.RecyclerItemClickListener {
+public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.RecyclerItemClickListener{
 
+	@BindView(R.id.retryButton) Button retryButton;
 	@BindView(R.id.recycler) RecyclerView recyclerView;
 	@BindView(R.id.errorTextView) TextView errorTextView;
-
-	MeteoriteAdapter meteoriteAdapter;
-	List<Meteorite> meteoriteList = new ArrayList<>();
+	@BindView(R.id.progressView) ProgressBar progressBar;
 	Realm realm;
 
 	@Override
@@ -53,8 +51,6 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 		recyclerView.setLayoutManager(layoutManager);
-		meteoriteAdapter = new MeteoriteAdapter(this, meteoriteList, this);
-		recyclerView.setAdapter(meteoriteAdapter);
 
 		SyncScheduler.scheduleSync(this);
 	}
@@ -105,32 +101,43 @@ public class MainActivity extends AppCompatActivity implements MeteoriteAdapter.
 		startActivity(mapActivityIntent);
 	}
 
+	@OnClick(R.id.retryButton)
+	public void onRetryClick(View v) {
+		fillRecycler();
+	}
+
 	public void fillRecycler() {
-		RealmResults<Meteorite> meteoriteRealmResults = realm.where(Meteorite.class)
-				.findAllSorted(DataManager.getSortField().toLowerCase(), DataManager.getSortOrientation());
+		recyclerView.setAdapter(new MeteoriteAdapter(this, realm, this, new SyncCallback(this){
 
-		if (meteoriteRealmResults.size() > 0) {
-			meteoriteList.clear();
-			meteoriteList.addAll(meteoriteRealmResults);
-			errorTextView.setVisibility(View.GONE);
-			recyclerView.setVisibility(View.VISIBLE);
-			meteoriteAdapter.notifyDataSetChanged();
-		} else {
-			Toast.makeText(this, R.string.toast_sync_start, Toast.LENGTH_SHORT).show();
-			DataManager.syncMeteorites(realm, new SyncCallback(this) {
-				@Override
-				public void onSyncSuccess() {
-					super.onSyncSuccess();
-					fillRecycler();
-				}
+			@Override
+			public void onSyncStarted() {
+				recyclerView.setVisibility(View.GONE);
+				errorTextView.setVisibility(View.GONE);
+				progressBar.setVisibility(View.VISIBLE);
+				retryButton.setVisibility(View.GONE);
+			}
 
-				@Override
-				public void onSyncFailed() {
-					super.onSyncFailed();
-					Toast.makeText(MainActivity.this, R.string.toast_sync_failed, Toast.LENGTH_SHORT).show();
-				}
-			});
-		}
+			@Override
+			public void onSyncSuccess() {
+				super.onSyncSuccess();
+				recyclerView.setVisibility(View.VISIBLE);
+				errorTextView.setVisibility(View.GONE);
+				progressBar.setVisibility(View.GONE);
+				retryButton.setVisibility(View.GONE);
+				fillRecycler();
+			}
+
+			@Override
+			public void onSyncFailed() {
+				super.onSyncFailed();
+				errorTextView.setVisibility(View.VISIBLE);
+				retryButton.setVisibility(View.VISIBLE);
+				progressBar.setVisibility(View.GONE);
+
+			}
+
+		}));
+
 	}
 
 	private void showSortDialog() {
