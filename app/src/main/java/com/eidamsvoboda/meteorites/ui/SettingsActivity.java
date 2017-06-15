@@ -111,6 +111,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 	public void updateLastSyncTextView() {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
-		lastSyncTextView.setText(getString(R.string.settings_last_sync,DataManager.getLastSyncResult()+" "+formatter.format(DataManager.getLastSyncDate())));
+		lastSyncTextView.setText(getString(R.string.settings_last_sync, DataManager.getLastSyncResult() + " " + formatter.format(DataManager.getLastSyncDate())));
 	}
 }

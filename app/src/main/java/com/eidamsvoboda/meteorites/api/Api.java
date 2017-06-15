@@ -39,7 +39,7 @@ public class Api {
 							.url(tokenUrl);
 
 					Request tokenRequest = requestBuilder.build();
-					return  chain.proceed(tokenRequest);
+					return chain.proceed(tokenRequest);
 				}
 			};
 

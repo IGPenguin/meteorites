@@ -13,7 +13,7 @@ public class SyncCallback {
 	Context context;
 
 	public SyncCallback(Context context) {
-		this.context=context;
+		this.context = context;
 	}
 
 	public void onSyncSuccess() {

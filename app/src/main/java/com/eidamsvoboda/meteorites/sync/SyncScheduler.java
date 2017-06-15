@@ -19,7 +19,7 @@ public class SyncScheduler {
 		alarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(DataManager.getSyncFrequency()), TimeUnit.HOURS.toMillis(DataManager.getSyncFrequency()), getSyncIntent(context));
 	}
 
-	public static PendingIntent getSyncIntent(Context context) {
+	private static PendingIntent getSyncIntent(Context context) {
 		Intent intent = new Intent(context, SyncBroadcastReceiver.class);
 		return PendingIntent.getBroadcast(context, 0, intent, 0);
 	}

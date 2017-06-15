@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by eidamsvoboda on 05/06/2017.
  */
 
-public class Meteorite extends RealmObject{
+public class Meteorite extends RealmObject {
 	@PrimaryKey
 	private String id;
 	private double mass;
