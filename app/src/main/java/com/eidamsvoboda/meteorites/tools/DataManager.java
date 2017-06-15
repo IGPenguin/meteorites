@@ -105,12 +105,12 @@ public class DataManager {
 		List<Meteorite> meteoriteList = new ArrayList<>();
 
 		RealmResults<Meteorite> meteoriteRealmResults = realm.where(Meteorite.class)
-				.findAllSorted(DataManager.getSortField().toLowerCase(), DataManager.getSortOrientation());
+				.findAllSorted(getSortField().toLowerCase(), getSortOrientation());
 
 		if (meteoriteRealmResults.size() > 0) {
 			meteoriteList.addAll(meteoriteRealmResults);
 		} else {
-			DataManager.syncMeteorites(realm, syncCallback);
+			syncMeteorites(realm, syncCallback);
 		}
 
 		return meteoriteList;
